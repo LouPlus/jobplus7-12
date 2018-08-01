@@ -85,7 +85,7 @@ class Company(Base):
     welfares = db.Column(db.String(256))
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
-    user = db.relationship('User', userlist=False, backref=db.backref('company', uselist=False))
+    user = db.relationship('User', uselist=False, backref=db.backref('company', uselist=False))
 
     def __repr__(self):
         return '<Company {}>'.format(self.name)
@@ -119,7 +119,7 @@ class Delivery(Base):
     STATUS_ACCEPT = 3
 
     id = db.Column(db.Integer, primary_key=True)
-    job_id = db.Column(db.Integer, db.ForeignKey('job_id', ondelete='SET NULL'))
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id', ondelete='SET NULL'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
     status = db.Column(db.SmallInteger, default=STATUS_WAITING)
 
