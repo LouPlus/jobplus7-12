@@ -40,3 +40,10 @@ def register_company():
 		flash('注册成功','success')
 		return redirect(url_for('front.login'))
 	return render_template('register_company.html',form=form)
+
+@front.route('/layout')
+@login_required
+def layout():
+	logout_user()
+	flash("you have exit","success")
+	return redirect(url_for('.index'))
