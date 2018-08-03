@@ -5,3 +5,4 @@ flask-migrate
 flask-wtf
 flask-login
 faker
+flask-uploads
