@@ -1,9 +1,13 @@
 from flask_wtf import FlaskForm
+from flask import url_for
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, ValidationError
 from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRange
 from jobplus.models import db, User
-from jobplus.handlers.user import set_doc
+from flask_uploads import UploadSet, DOCUMENTS
+import os
+
+set_resume = UploadSet('DOC', DOCUMENTS)
 
 
 class RegisterForm(FlaskForm):
@@ -54,13 +58,17 @@ class UserProfileForm(FlaskForm):
     password = PasswordField('密码', validators=[Required(), Length(6, 24)])
     phone = StringField('手机号')
     work_years = IntegerField('工作年限')
-    resume = FileField('简历上传', validators=[Required(), FileAllowed(set_doc, '只能上传文件！')])
+    resume = FileField('简历上传', validators=[Required(), FileAllowed(set_resume, '只能上传文件！')])
     submit = SubmitField('提交')
 
     def validate_phone(self, field):
         phone = field.data
         if phone[:2] not in ('13', '15', '18') and len(phone) != 11:
             raise ValidationError('请输入有效的手机号')
+
+    def name_resume(self):  # To avoid conflict with multiple resumes
+        extension = os.path.splitext(self.resume.data.filename)[1]
+        return self.real_name.data + self.phone.data + extension
 
     def updated_profile(self, user):
         user.real_name = self.real_name.data
@@ -69,6 +77,7 @@ class UserProfileForm(FlaskForm):
             user.password = self.password.data
         user.phone = self.phone.data
         user.work_years = self.work_years.data
-        user.resume = self.resume.data
+        user.upload_resume_url = url_for('static', filename='resumes/' + self.name_resume(),
+                                         _external=True)  # _external option depend absolute or relative link
         db.session.add(user)
         db.session.commit()

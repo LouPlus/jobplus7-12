@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from jobplus.models import db, User
 from flask_login import LoginManager
 from flask_uploads import configure_uploads, patch_request_class
-from jobplus.handlers.user import set_doc
+from jobplus.forms import set_resume
 
 
 def register_blueprints(app):
@@ -35,7 +35,7 @@ def create_app(config):
     app.config.from_object(configs.get(config))
     register_blueprints(app)
     register_extensions(app)
-    app.config['UPLOADED_DOC_DEST'] = './Uploads'  # upload directory
-    configure_uploads(app, set_doc)
-    patch_request_class(app)  # set maximum file size, default is 16MB
+    app.config['UPLOADED_DOC_DEST'] = './jobplus/static/resumes'  # upload DOC directory
+    configure_uploads(app, set_resume)
+    patch_request_class(app)  # set maximum file size, default 16MB
     return app
