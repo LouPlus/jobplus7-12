@@ -5,8 +5,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
+
 class Base(db.Model):
-    
     __abstract__ = True
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -14,21 +14,19 @@ class Base(db.Model):
 
 
 user_job = db.Table(
-        'user_job',
-        db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE')),
-        db.Column('job_id', db.Integer, db.ForeignKey('job.id', ondelete='CASCADE'))
+    'user_job',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id', ondelete='CASCADE')),
+    db.Column('job_id', db.Integer, db.ForeignKey('job.id', ondelete='CASCADE'))
 
-        )
+)
 
 
 class User(Base, UserMixin):
     __tablename__ = 'user'
 
-
     ROLE_USER = 10
     ROLE_COMPANY = 20
     ROLE_ADMIN = 30
-
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), unique=True, index=True, nullable=False)
@@ -36,10 +34,13 @@ class User(Base, UserMixin):
     _password = db.Column('password', db.String(256), nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
 
-    #resume = db.Column(db.String(256)) #? To be modified after
-    collect_jobs = db.relationship('Job', secondary=user_job)
+    real_name = db.Column(db.String(20))  # user profile
+    phone = db.Column(db.String(11))
+    work_years = db.Column(db.SmallInteger)
     upload_resume_url = db.Column(db.String(64))
 
+    # resume = db.Column(db.String(256)) #? To be modified after
+    collect_jobs = db.relationship('Job', secondary=user_job)
 
     def __repr__(self):
         return '<User:{}>'.format(self.username)
@@ -51,7 +52,7 @@ class User(Base, UserMixin):
     @password.setter
     def password(self, orig_password):
         self._password = generate_password_hash(orig_password)
-    
+
     def check_password(self, password):
         return check_password_hash(self._password, password)
 
@@ -64,21 +65,20 @@ class User(Base, UserMixin):
         return self.role == self.ROLE_COMPANY
 
 
-
 class Company(Base):
     __tablename__ = 'company'
 
     id = db.Column(db.Integer, primary_key=True)
-    #name = db.Column(db.String(64), nullable=False, index=True, unique=True)
+    # name = db.Column(db.String(64), nullable=False, index=True, unique=True)
     slug = db.Column(db.String(24), nullable=False, index=True, unique=True)
     logo = db.Column(db.String(64), nullable=False)
     site = db.Column(db.String(64), nullable=False)
     contact = db.Column(db.String(24), nullable=False)
-    #email = db.Column(db.String(24), nullable=False)
+    # email = db.Column(db.String(24), nullable=False)
     location = db.Column(db.String(24), nullable=False)
 
-    description = db.Column(db.String(100)) #This is a sentence description
-    about = db.Column(db.String(1024)) #Detailed description about company
+    description = db.Column(db.String(100))  # This is a sentence description
+    about = db.Column(db.String(1024))  # Detailed description about company
     tags = db.Column(db.String(128))
     stack = db.Column(db.String(128))
     team_introduction = db.Column(db.String(256))
@@ -111,6 +111,7 @@ class Job(Base):
     def __repr__(self):
         return '<Job {}>'.format(self.name)
 
+
 class Delivery(Base):
     __tablename__ = 'delivery'
 
@@ -124,5 +125,3 @@ class Delivery(Base):
     status = db.Column(db.SmallInteger, default=STATUS_WAITING)
 
     response = db.Column(db.String(256))
-
-
