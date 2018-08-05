@@ -2,7 +2,7 @@
 from flask import Flask, render_template
 from jobplus.config import configs
 from flask_migrate import Migrate
-from jobplus.models import db, User
+from jobplus.models import db, User, Company
 from flask_login import LoginManager
 from flask_uploads import configure_uploads, patch_request_class
 from jobplus.forms import set_resume

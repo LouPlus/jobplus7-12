@@ -38,7 +38,6 @@ class User(Base, UserMixin):
     phone = db.Column(db.String(11))
     work_years = db.Column(db.SmallInteger)
     upload_resume_url = db.Column(db.String(64))
-    company_detail = db.relationship('Company')
 
     # resume = db.Column(db.String(256)) #? To be modified after
     collect_jobs = db.relationship('Job', secondary=user_job)
@@ -86,7 +85,7 @@ class Company(Base):
     welfares = db.Column(db.String(256))
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
-    user = db.relationship('User', uselist=False, backref=db.backref('company', uselist=False))
+    user = db.relationship('User', uselist=False, backref=db.backref('company_detail', uselist=False))
 
     def __repr__(self):
         return '<Company {}>'.format(self.name)

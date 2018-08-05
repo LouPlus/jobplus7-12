@@ -102,9 +102,11 @@ class CompanyProfileForm(FlaskForm):
 
         if self.password.data:
             user.password = self.password.data
-        
-        company = Company()
-        company.user_id = user.id
+        if user.company_detail:
+            company = user.company_detail
+        else:
+            company = Company()
+            company.user_id = user.id
         
         if self.slug.data:
             company.slug = self.slug.data
