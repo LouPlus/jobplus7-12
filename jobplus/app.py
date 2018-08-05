@@ -6,8 +6,10 @@ from jobplus.models import db, User
 from flask_login import LoginManager
 
 def register_blueprints(app):
-    from .handlers import front
+    from .handlers import front, company
     app.register_blueprint(front)
+    app.register_blueprint(company)
+
 
 def register_extensions(app):
 	db.init_app(app)
