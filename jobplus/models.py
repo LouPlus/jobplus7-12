@@ -38,7 +38,7 @@ class User(Base, UserMixin):
     phone = db.Column(db.String(11))
     work_years = db.Column(db.SmallInteger)
     upload_resume_url = db.Column(db.String(64))
-
+    company_detail = db.relationship('Company')
 
     # resume = db.Column(db.String(256)) #? To be modified after
     collect_jobs = db.relationship('Job', secondary=user_job)

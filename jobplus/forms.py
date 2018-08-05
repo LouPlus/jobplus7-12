@@ -3,11 +3,14 @@ from flask import url_for
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, ValidationError
 from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRange
+<<<<<<< HEAD
 from flask_uploads import UploadSet, DOCUMENTS
 import os
 
 set_resume = UploadSet('DOC', DOCUMENTS)
 
+=======
+>>>>>>> d4bcb0f33d6a133f8d489a9a37fb86b0b6285088
 from jobplus.models import db, User, Company
 
 class RegisterForm(FlaskForm):
@@ -52,6 +55,7 @@ class LoginForm(FlaskForm):
             raise ValidationError('密码错误')
 
 
+<<<<<<< HEAD
 class UserProfileForm(FlaskForm):
     real_name = StringField('姓名')
     email = StringField('邮箱', validators=[Required(), Email()])
@@ -83,6 +87,8 @@ class UserProfileForm(FlaskForm):
         db.session.commit()
 
 
+=======
+>>>>>>> d4bcb0f33d6a133f8d489a9a37fb86b0b6285088
 class CompanyProfileForm(FlaskForm):
     username = StringField('企业名称')
     email = StringField('邮箱', validators=[Required(),Email()])

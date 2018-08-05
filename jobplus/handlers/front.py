@@ -13,13 +13,18 @@ front = Blueprint('front', __name__)
 def index():
     return render_template('index.html')
 
+<<<<<<< HEAD
 
 @front.route('/login', methods=['GET', 'POST'])
+=======
+@front.route('/login', methods=['GET','POST'])
+>>>>>>> d4bcb0f33d6a133f8d489a9a37fb86b0b6285088
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         login_user(user, form.remember_me.data)
+<<<<<<< HEAD
 
         company = Company.query.filter_by(user_id=user.id).first()
         if user.is_company and company is None:
@@ -42,6 +47,18 @@ def login():
 
 
         
+=======
+        
+        company = Company.query.filter_by(user_id=user.id).first() 
+
+        if user.is_company and company is None:
+        
+        #企业用户第一次登录跳转企业信息页面
+            return redirect(url_for('company.profile'))
+        return redirect(url_for('.index'))
+
+    return render_template('login.html',form=form)
+>>>>>>> d4bcb0f33d6a133f8d489a9a37fb86b0b6285088
 
 @front.route('/logout')
 @login_required
