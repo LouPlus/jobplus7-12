@@ -39,6 +39,7 @@ class User(Base, UserMixin):
     work_years = db.Column(db.SmallInteger)
     upload_resume_url = db.Column(db.String(64))
 
+
     # resume = db.Column(db.String(256)) #? To be modified after
     collect_jobs = db.relationship('Job', secondary=user_job)
 
@@ -71,10 +72,10 @@ class Company(Base):
     id = db.Column(db.Integer, primary_key=True)
     # name = db.Column(db.String(64), nullable=False, index=True, unique=True)
     slug = db.Column(db.String(24), nullable=False, index=True, unique=True)
-    logo = db.Column(db.String(64), nullable=False)
-    site = db.Column(db.String(64), nullable=False)
-    contact = db.Column(db.String(24), nullable=False)
-    # email = db.Column(db.String(24), nullable=False)
+    logo = db.Column(db.String(64))
+    site = db.Column(db.String(64))
+    #contact = db.Column(db.String(24), nullable=False)
+    #email = db.Column(db.String(24), nullable=False)
     location = db.Column(db.String(24), nullable=False)
 
     description = db.Column(db.String(100))  # This is a sentence description
