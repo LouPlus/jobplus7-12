@@ -18,3 +18,7 @@ a:visited {
 width: 250px;
 margin-left: 30%;
 }
+.list-more {
+    text-align: center;
+    margin-bottom: 50px;
+}

@@ -46,6 +46,9 @@
         </div>
        
       </nav>
+      <div class="container-fluid header">
+        {% block head %}{% endblock %}
+      </div>
       <div class="container">
          {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
