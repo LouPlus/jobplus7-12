@@ -3,9 +3,10 @@ from flask import url_for
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, ValidationError
 from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRange
-from jobplus.models import db, User
 from flask_uploads import UploadSet, DOCUMENTS
 import os
+from jobplus.models import db, User, Company
+
 
 set_resume = UploadSet('DOC', DOCUMENTS)
 
@@ -80,4 +81,47 @@ class UserProfileForm(FlaskForm):
         user.upload_resume_url = url_for('static', filename='resumes/' + self.name_resume(),
                                          _external=True)  # _external option depend absolute or relative link
         db.session.add(user)
+        db.session.commit()
+
+
+class CompanyProfileForm(FlaskForm):
+    username = StringField('企业名称')
+    email = StringField('邮箱', validators=[Required(),Email()])
+    password = PasswordField('密码（不填保持不变）')
+    slug = StringField('Slug', validators=[Required(),Length(3,24)])
+    location = StringField('地址', validators=[Required(),Length(0,64)])
+    site = StringField('公司网站', validators=[Length(0,64)])
+    logo = StringField('Logo')
+    description = StringField('一句话描述', validators=[Length(0,100)])
+    about = TextAreaField('公司详情', validators=[Length(0,1024)])
+    submit = SubmitField('提交')
+
+    def updated_profile(self, user):
+        user.username = self.username.data
+        user.email = self.email.data
+
+        if self.password.data:
+            user.password = self.password.data
+        if user.company_detail:
+            company = user.company_detail
+        else:
+            company = Company()
+            company.user_id = user.id
+        
+        if self.slug.data:
+            company.slug = self.slug.data
+        if self.location.data:
+            company.location = self.location.data
+        if self.site.data:
+            company.site = self.site.data
+        if self.logo.data:
+            company.logo = self.logo.data
+        if self.description.data:
+            company.description = self.description.data
+        if self.about.data:
+            company.about = self.about.data
+        
+
+        db.session.add(user)
+        db.session.add(company)
         db.session.commit()
