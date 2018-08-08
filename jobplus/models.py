@@ -70,9 +70,9 @@ class Company(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     # name = db.Column(db.String(64), nullable=False, index=True, unique=True)
-    slug = db.Column(db.String(24), nullable=False, index=True, unique=True)
-    logo = db.Column(db.String(64))
-    site = db.Column(db.String(64))
+    slug = db.Column(db.String(24))
+    logo = db.Column(db.String(256))
+    site = db.Column(db.String(256))
     #contact = db.Column(db.String(24), nullable=False)
     #email = db.Column(db.String(24), nullable=False)
     location = db.Column(db.String(24), nullable=False)

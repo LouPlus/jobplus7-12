@@ -1,0 +1,15 @@
+import requests
+url = 'https://www.lagou.com/gongsi/0-0-0.json'
+payload = {
+	'first': 'false',
+	'pn': '1',
+	'sortField': '0',
+	'havemark': '0'
+}
+headers = {
+'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36',
+'Referer': 'https://www.lagou.com/gongsi/',
+'Cookie': 'WEBTJ-ID=20180807111813-165126463ad23d-05cb6fbf1029c-182e1503-1049088-165126463aed62; _ga=GA1.2.410131003.1533611894; _gid=GA1.2.879117640.1533611894; user_trace_token=20180807111813-852558e9-99f0-11e8-b757-525400f775ce; LGUID=20180807111813-85255de5-99f0-11e8-b757-525400f775ce; JSESSIONID=ABAAABAABEEAAJA0597CF539A3ECC19D9C0734825CAA4C8; index_location_city=%E5%85%A8%E5%9B%BD; X_HTTP_TOKEN=dc0f80d61fad146960fa56ffd06b8bf3; showExpriedIndex=1; showExpriedCompanyHome=1; showExpriedMyPublish=1; hasDeliver=0; login=false; unick=""; _putrc=""; LG_LOGIN_USER_ID=""; Hm_lvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1533611894,1533619552,1533698991; LGSID=20180808173724-a827a8be-9aee-11e8-b8b7-525400f775ce; TG-TRACK-CODE=index_checkmore; SEARCH_ID=3ba1ccfb7a43445d9139281da9476747; _gat=1; LGRID=20180808182932-f087f828-9af5-11e8-a356-5254005c3644; Hm_lpvt_4233e74dff0ae5bd0a3d81c6ccf756e6=1533724174'
+}
+response = requests.post(url, data=payload, headers=headers)
+print(response.json)
