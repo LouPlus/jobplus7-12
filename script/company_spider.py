@@ -49,6 +49,8 @@ class FakerData(object):
 				logo = 'http://www.lgstatic.com/thumbnail_200x200/' + company['companyLogo'],
 				site='https://shiyanlou.com',
 				location=company['city'],
+				field=company['industryField'],
+				finance_stage=company['financeStage']
 			)
 			d.user_id = c.id
 			db.session.add(d)
@@ -56,18 +58,20 @@ class FakerData(object):
 	def fake_job(self):
 		companies = User.query.filter_by(role=User.ROLE_COMPANY).all()
 		for i in range(100):
+			company = random.choice(companies)
 			job = Job(
 				name=fake.word() + '',
 				salary_low=random.randrange(3000, 8000, 1000),
 				salary_high=random.randrange(8000, 20000, 10000),
 				location=company.detail.location,
-				tag=','.join([fake.word() for i in range(3)]),
+				tags=','.join([fake.word() for i in range(3)]),
 				company=company,
 				experience_requirement=random.choice(['不限', '1', '1-3', '3-5', '5+']),
-				degree_requirement=random.choice('不限', '本科', '硕士', '博士'),
+				degree_requirement=random.choice(['不限', '本科', '硕士', '博士']),
 			)
 			db.session.add(job)
 			db.session.commit()
 def run():
 	f = FakerData()
 	f.fake_company()
+	f.fake_job()

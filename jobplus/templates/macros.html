@@ -51,3 +51,52 @@
   </ul>
 </nav>
 {% endmacro %}
+
+{% macro render_company(company) %}
+  <div class="col-sm-6 col-md-3 company-item">
+    <div class="thumbnail">
+      <a href="#">
+        <img src="{{ company.detail.logo }}" width="100" height="100" alt="..."/>
+        <h4>{{ company.username }}</h4>
+      </a>
+      <hr>
+    <a class="#">
+        <p>在招人数: {{ company.enable_jobs.count() }}</p>
+    </a>
+    </div>
+    
+  </div>
+{% endmacro%}
+
+
+{% macro render_job(job) %}
+  <div class="col-sm-6 col-md-4">
+    <div class="job-box">
+      <div class="caption">
+          <a href="#">
+            <b>{{job.name}}</b><span class="timesince">[{{ job.created_at | timesince }}]</span>
+            <p>经验:{{ job.experience_requirement }} {% if job.experience_requirement != '不限' %}年{% endif %} 学历:{{ job.degree_requirement }}</p>
+            {% for tag in job.tag_list %}
+            <span class="label label-default">{{ tag }}</span>
+            {% endfor %}
+          </a>
+      </div>
+      <hr>
+      <div class="media">
+        <div class="media-left">
+          <a href="#">
+            <img class="media-object" src="{{ job.company.detail.logo }}" width="40" height="40" alt="...">
+          </a>
+        </div>
+        <div class="media-body">
+            <a href="#">
+              <h4 class="media-heading">{{ job.company.username }}</h4>
+            </a>
+            <span class="company-meta">
+              {{ job.company.detail.field }}/{{ job.company.detail.location }}/{{ job.company.detail.finance_stage}}
+            </span>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
