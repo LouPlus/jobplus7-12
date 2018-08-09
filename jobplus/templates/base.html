@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="http://labfile.oss.aliyuncs.com/courses/923/week7/code/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="static/main.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css')}}">
         {% block head_css %}
         {% endblock %}
         {% block tail_js %}
@@ -24,9 +24,16 @@
           </div>
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li><a href="/">职位<span class="sr-only">(current)</span></a></li>
-              <li><a href="#">公司</a></li>
-            </ul>
+              <li class="{% if active == 'job' %}active{% endif %}"><a href="{{ url_for('job.index') }}">职位<span class="sr-only">(current)</span></a></li>
+              <li class="{% if active == 'company' %}active{% endif %}"><a href="{{ url_for('company.index') }}">公司<span class="sr-only">(current)</span></a></li>
+              {% if current_user.is_authenticated and current_user.is_admin %}
+              <li><a href="＃">控制台</a></li>
+              {% endif %}
+              {% if current_user.is_authenticated and current_user.is_company %}
+              <li class="{% if active == 'admin' %}active{% endif %}"><a href="#"><span class="sr-only">(current)</span></a></li>
+              {% endif %}
+
+          </ul>
             <ul class="nav navbar-nav navbar-right">   
                 {% if not current_user.is_authenticated %}
                 <li><a href="/register_user">用户注册</a></li>

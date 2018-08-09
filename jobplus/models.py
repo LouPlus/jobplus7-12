@@ -40,11 +40,18 @@ class User(Base, UserMixin):
     upload_resume_url = db.Column(db.String(64))
 
     # resume = db.Column(db.String(256)) #? To be modified after
+    detail = db.relationship('Company', uselist=False)
     collect_jobs = db.relationship('Job', secondary=user_job)
+    is_disable = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '<User:{}>'.format(self.username)
 
+    @property
+    def enable_jobs(self):
+        if not self.is_company:
+            raise AttributeError('User has no attribute enable_jobs')
+        return self.jobs.filter(Job.is_disable.is_(False))
     @property
     def password(self):
         return self._password
@@ -83,7 +90,8 @@ class Company(Base):
     stack = db.Column(db.String(128))
     team_introduction = db.Column(db.String(256))
     welfares = db.Column(db.String(256))
-
+    field = db.Column(db.String(128))
+    finance_stage = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
     user = db.relationship('User', uselist=False, backref=db.backref('company_detail', uselist=False))
 
@@ -95,7 +103,7 @@ class Job(Base):
     __tablename__ = 'job'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(24), nullable=False)
     salary_low = db.Column(db.Integer, nullable=False)
     salary_high = db.Column(db.Integer, nullable=False)
     location = db.Column(db.String(24))
@@ -105,12 +113,16 @@ class Job(Base):
     is_fulltime = db.Column(db.Boolean, default=True)
 
     is_open = db.Column(db.Boolean, default=True)
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='CASCADE'))
+    company_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
+    company = db.relationship('User',uselist=False,backref=db.backref('jobs',lazy='dynamic'))
     views_count = db.Column(db.Integer, default=0)
-
+    is_disable = db.Column(db.Boolean, default=False)
+    
     def __repr__(self):
         return '<Job {}>'.format(self.name)
-
+    @property
+    def tag_list(self):
+        return self.tags.split(',')
 
 class Delivery(Base):
     __tablename__ = 'delivery'
