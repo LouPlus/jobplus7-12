@@ -124,6 +124,11 @@ class Job(Base):
     def tag_list(self):
         return self.tags.split(',')
 
+    @property
+    def current_user_is_applied(self):
+        d = Delivery.query.filter_by(job_id=self.id).first()
+        return (d is not None)
+
 class Delivery(Base):
     __tablename__ = 'delivery'
 
