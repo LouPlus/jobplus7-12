@@ -55,12 +55,12 @@
 {% macro render_company(company) %}
   <div class="col-sm-6 col-md-3 company-item">
     <div class="thumbnail">
-      <a href="#">
+      <a href="{{ url_for('company.detail', company_id=company.id)}}">
         <img src="{{ company.detail.logo }}" width="100" height="100" alt="..."/>
         <h4>{{ company.username }}</h4>
       </a>
       <hr>
-    <a class="#">
+    <a href="{{ url_for('company.company_jobs', company_id=company.id)}}">
         <p>在招人数: {{ company.enable_jobs.count() }}</p>
     </a>
     </div>
@@ -84,12 +84,12 @@
       <hr>
       <div class="media">
         <div class="media-left">
-          <a href="#">
+          <a href="{{ url_for('job.detail', job_id=job.id)}}">
             <img class="media-object" src="{{ job.company.detail.logo }}" width="40" height="40" alt="...">
           </a>
         </div>
         <div class="media-body">
-            <a href="#">
+            <a href="{{ url_for('company.detail', company_id=job.company.id)}}">
               <h4 class="media-heading">{{ job.company.username }}</h4>
             </a>
             <span class="company-meta">

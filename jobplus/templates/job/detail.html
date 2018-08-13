@@ -10,7 +10,7 @@
         <div class="col-md-4">
             {% if current_user.is_authenticated %}
                 {% if not job.current_user_is_applied %}
-                <a href="#" class="btn btn-success btn-lg dilivery-btn">投递简历</a>
+                <a href="{{ url_for('job.apply', job_id=job.id)}}" class="btn btn-success btn-lg dilivery-btn">投递简历</a>
                 {% else %}
                 <a href="#" class="btn btn-success btn-lg dilivery-btn">已投递</a>
                 {% endif %}

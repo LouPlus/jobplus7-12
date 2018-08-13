@@ -111,7 +111,7 @@ class Job(Base):
     experience_requirement = db.Column(db.String(32))
     degree_requirement = db.Column(db.String(32))
     is_fulltime = db.Column(db.Boolean, default=True)
-
+    description = db.Column(db.String(15000))
     is_open = db.Column(db.Boolean, default=True)
     company_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     company = db.relationship('User',uselist=False,backref=db.backref('jobs',lazy='dynamic'))
@@ -139,6 +139,14 @@ class Delivery(Base):
     id = db.Column(db.Integer, primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id', ondelete='SET NULL'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
+    company_id = db.Column(db.Integer)
     status = db.Column(db.SmallInteger, default=STATUS_WAITING)
 
     response = db.Column(db.String(256))
+
+    @property
+    def user(self):
+        return User.query.get(self.user_id)
+    @property
+    def job(self):
+        return Job.query.get(self.job_id)

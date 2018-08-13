@@ -30,7 +30,7 @@
               <li><a href="{{ url_for('admin.index')}}">控制台</a></li>
               {% endif %}
               {% if current_user.is_authenticated and current_user.is_company %}
-              <li class="{% if active == 'admin' %}active{% endif %}"><a href="{{ url_for('admin.index')}}">管理<span class="sr-only">(current)</span></a></li>
+              <li class="{% if active == 'admin' %}active{% endif %}"><a href="{{ url_for('company.admin_index', company_id=current_user.id)}}">管理<span class="sr-only">(current)</span></a></li>
               {% endif %}
 
           </ul>
@@ -46,7 +46,7 @@
                  {% if current_user.is_company %}    
                  <li><a href="{{ url_for('company.profile')}}">企业信息</a></li>
                  {% else %}
-                 <li><a href="#">个人信息</a></li> 
+                 <li><a href="{{ url_for('user.profile')}}">个人信息</a></li> 
 
                  {% endif%}
                  <li role="separator" class="divider"></li>
