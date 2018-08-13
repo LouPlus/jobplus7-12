@@ -21,7 +21,7 @@
     {% endfor %}
   </div>
   <p class="list-more">
-    <a href="#" class="btn btn-success btn-lg list-more-btn">查看更多</a>
+    <a href="{{ url_for('job.index') }}" class="btn btn-success btn-lg list-more-btn">查看更多</a>
   </p>
   <ul class="nav nav-tabs list-title">
     <li role="presentation" class="active"><a href="#">最新公司</a></li>
@@ -32,6 +32,6 @@
     {% endfor %}
   </div>
   <p class="list-more">
-    <a href="#" class="btn btn-success btn-lg list-more-btn">查看更多</a>
+    <a href="{{ url_for('company.index') }}" class="btn btn-success btn-lg list-more-btn">查看更多</a>
   </p>
 {% endblock %}

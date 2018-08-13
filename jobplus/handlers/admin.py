@@ -73,3 +73,14 @@ def edit_user(user_id):
 		form.site.data = user.detail.site
 		form.description.data = user.detail.description
 	return render_template('admin/edit_user.html', form=form, user=user)
+
+@admin.route('/jobs')
+@admin_required
+def jobs():
+	page = request.args.get('page', 1 , type=int)
+	pagination = Job.query.paginate(
+		page=page,
+		per_page = 12,
+		error_out=False,
+	)
+	return render_template('admin/jobs.html', pagination=pagination)
